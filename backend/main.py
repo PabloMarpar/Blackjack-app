@@ -67,11 +67,15 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://blackjack-91kceypby-pablomarpars-projects.vercel.app",
+        "https://blackjack-app-pink.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 class StepRequest(BaseModel):
     ps: int

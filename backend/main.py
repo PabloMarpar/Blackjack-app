@@ -4,6 +4,7 @@ import datetime
 import torch
 import torch.nn as nn
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from huggingface_hub import hf_hub_download, login
 
@@ -18,6 +19,7 @@ class DuelingRecurrentDQN(nn.Module):
         self.gru = nn.GRUCell(3, 128)
         self.value_fc = nn.Linear(128, 1)
         self.adv_fc   = nn.Linear(128, 2)
+
     def forward(self, x, h):
         h2 = self.gru(x, h)
         v = self.value_fc(h2)
@@ -38,7 +40,8 @@ model.eval()
 DB_FILE = "users.json"
 
 def load_db():
-    if not os.path.exists(DB_FILE): return {}
+    if not os.path.exists(DB_FILE):
+        return {}
     return json.load(open(DB_FILE))
 
 def save_db(db):
@@ -64,6 +67,15 @@ def check_and_use(user_id):
 # API con FastAPI
 app = FastAPI()
 
+# Configurar CORS para aceptar peticiones desde el frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Puedes poner la URL de tu frontend para mayor seguridad
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 class StepRequest(BaseModel):
     ps: int
     dc: int
@@ -80,9 +92,11 @@ def step(req: StepRequest):
     with torch.no_grad():
         q, h2 = model(x, h)
         p = torch.softmax(q, 1)[0].tolist()
-    return {"decision": "Hit" if p[1] > p[0] else "Stand",
-            "conf": max(p),
-            "h": h2.tolist()}
+    return {
+        "decision": "Hit" if p[1] > p[0] else "Stand",
+        "conf": max(p),
+        "h": h2.tolist()
+    }
 
 @app.post("/add_credits")
 def add_credits(req: dict):

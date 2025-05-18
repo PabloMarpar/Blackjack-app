@@ -1,4 +1,4 @@
-const backend = "https://TU_BACKEND_URL";
+const backend = "https://assistant-blackjack-ai.onrender.com";
 let userId = null;
 
 // Login

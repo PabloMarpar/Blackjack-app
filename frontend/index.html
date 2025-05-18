@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blackjack AI</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <h1>🎲 Blackjack AI</h1>
+  <!-- Modal de login -->
+  <div id="login">
+    <input id="userId" placeholder="Tu email o ID" />
+    <button id="loginBtn">Login</button>
+  </div>
+  <!-- App principal -->
+  <div id="app" class="hidden">
+    <nav>
+      <button data-tab="game">Juego</button>
+      <button data-tab="credits">Créditos</button>
+    </nav>
+    <section id="game" class="tab">
+      <label>PS: <input id="ps" type="number" min="4" max="21"></label><br>
+      <label>DC: <input id="dc" type="number" min="1" max="10"></label><br>
+      <label>UA: <input id="ua" type="checkbox"></label><br>
+      <button id="stepBtn">Jugar paso</button>
+      <pre id="out"></pre>
+    </section>
+    <section id="credits" class="tab hidden">
+      <button id="buy50">Comprar 50 (1.5€)</button>
+      <button id="buy1000">Comprar 1000 (70€)</button>
+      <pre id="creditStatus"></pre>
+    </section>
+  </div>
+</body>
+</html>

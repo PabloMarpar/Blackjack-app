@@ -1,0 +1,4 @@
+body { font-family: sans-serif; max-width: 480px; margin: auto; padding: 1rem; }
+.hidden { display: none; }
+nav button { margin-right: 0.5rem; }
+.tab { margin-top: 1rem; }

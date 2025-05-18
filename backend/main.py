@@ -7,12 +7,14 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from huggingface_hub import hf_hub_download, login
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 # Autenticación Hugging Face
 hf_token = os.environ.get("HF_TOKEN")
 login(token=hf_token)
 
-# Modelo DQN recurrente
 class DuelingRecurrentDQN(nn.Module):
     def __init__(self):
         super().__init__()
@@ -26,7 +28,6 @@ class DuelingRecurrentDQN(nn.Module):
         a = self.adv_fc(h2)
         return v + a - a.mean(1, keepdim=True), h2
 
-# Cargar modelo desde Hugging Face Hub
 model = DuelingRecurrentDQN()
 pth = hf_hub_download(
     repo_id="Carnotrvficante/Model",
@@ -36,7 +37,6 @@ pth = hf_hub_download(
 model.load_state_dict(torch.load(pth, map_location="cpu"))
 model.eval()
 
-# Gestión de créditos y usuarios
 DB_FILE = "users.json"
 
 def load_db():
@@ -53,7 +53,6 @@ def check_and_use(user_id):
     user = db.get(user_id, {"date": today, "daily": 0, "credits": 0})
     if user["date"] != today:
         user = {"date": today, "daily": 0, "credits": user.get("credits", 0)}
-    # 20 gratis diarios
     if user["daily"] < 20:
         user["daily"] += 1
     elif user["credits"] > 0:
@@ -64,13 +63,11 @@ def check_and_use(user_id):
     save_db(db)
     return True
 
-# API con FastAPI
 app = FastAPI()
 
-# Configurar CORS para aceptar peticiones desde el frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Puedes poner la URL de tu frontend para mayor seguridad
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -84,22 +81,35 @@ class StepRequest(BaseModel):
     user_id: str
 
 @app.post("/step")
-def step(req: StepRequest):
+async def step(req: StepRequest):
     if not check_and_use(req.user_id):
         raise HTTPException(403, "Sin créditos")
-    x = torch.tensor([[req.ps / 32, req.dc / 11, float(req.ua)]], dtype=torch.float32)
-    h = torch.tensor(req.h)
+
+    if len(req.h) != 128:
+        logging.error(f"Hidden state incorrect length: {len(req.h)}; expected 128")
+        raise HTTPException(400, "Estado oculto h debe tener longitud 128")
+
+    x = torch.tensor([[req.ps / 32, req.dc / 11, float(req.ua)]], dtype=torch.float32)  # shape (1,3)
+    h = torch.tensor(req.h, dtype=torch.float32).unsqueeze(0)  # shape (1,128)
+
     with torch.no_grad():
-        q, h2 = model(x, h)
-        p = torch.softmax(q, 1)[0].tolist()
+        q, h2 = model(x, h)  # h2 shape (1,128)
+        p = torch.softmax(q, dim=1)[0].tolist()
+
+    decision = "Hit" if p[1] > p[0] else "Stand"
+    conf = max(p)
+    h_out = h2.squeeze(0).tolist()  # devolver vector plano
+
+    logging.info(f"User {req.user_id}: decision={decision}, conf={conf}")
+
     return {
-        "decision": "Hit" if p[1] > p[0] else "Stand",
-        "conf": max(p),
-        "h": h2.tolist()
+        "decision": decision,
+        "conf": conf,
+        "h": h_out
     }
 
 @app.post("/add_credits")
-def add_credits(req: dict):
+async def add_credits(req: dict):
     user = req.get("user_id")
     amount = int(req.get("amount", 0))
     db = load_db()

@@ -77,7 +77,8 @@ app.add_middleware(
     allow_origins=[
         "https://blackjack-91kceypby-pablomarpars-projects.vercel.app",
         "https://blackjack-app-pink.vercel.app",
-        "https://blackjack-nxjl54q37-pablomarpars-projects.vercel.app"
+        "https://blackjack-nxjl54q37-pablomarpars-projects.vercel.app",
+        "https://blackjack-app-git-main-pablomarpars-projects.vercel.app"  
     ],
     allow_credentials=True,
     allow_methods=["*"],

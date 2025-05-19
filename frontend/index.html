@@ -11,7 +11,7 @@
   <div id="container">
     <h1>🎲 Blackjack IA</h1>
 
-    <!-- APP (ya no hay login) -->
+    <!-- APP -->
     <div id="app">
       <nav>
         <button data-tab="game" class="active">Juego</button>
@@ -20,14 +20,14 @@
 
       <section id="game" class="tab">
         <div class="input-row">
-          <label>PS: <input id="ps" type="number" min="4" max="21" value="10"></label>
-          <label>DC: <input id="dc" type="number" min="1" max="10" value="5"></label>
-          <label>UA: <input id="ua" type="checkbox"></label>
+          <label>Tu mano: <input id="ps" type="number" min="4" max="21" value="10"></label>
+          <label>Carta del crupier: <input id="dc" type="number" min="1" max="10" value="5"></label>
+          <label><input id="ua" type="checkbox"> ¿Tienes As usable?</label>
         </div>
 
         <div class="button-row">
-          <button id="stepBtn">Jugar paso</button>
-          <button id="resetBtn">Reset mano</button>
+          <button id="stepBtn">Predecir jugada</button>
+          <button id="resetBtn">Nueva mano</button>
         </div>
 
         <div id="results">

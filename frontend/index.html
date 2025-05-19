@@ -11,21 +11,13 @@
   <div id="container">
     <h1>🎲 Blackjack IA</h1>
 
-    <!-- LOGIN -->
-    <div id="login">
-      <input id="userId" placeholder="Tu email o ID" />
-      <button id="loginBtn">Login</button>
-    </div>
-
-    <!-- APP -->
-    <div id="app" class="hidden">
-      <!-- PESTAÑAS -->
+    <!-- APP (ya no hay login) -->
+    <div id="app">
       <nav>
         <button data-tab="game" class="active">Juego</button>
         <button data-tab="credits">Créditos</button>
       </nav>
 
-      <!-- SECCIÓN JUEGO -->
       <section id="game" class="tab">
         <div class="input-row">
           <label>PS: <input id="ps" type="number" min="4" max="21" value="10"></label>
@@ -44,7 +36,6 @@
         </div>
       </section>
 
-      <!-- SECCIÓN CRÉDITOS -->
       <section id="credits" class="tab hidden">
         <button id="buy50">Comprar 50 (1.5€)</button>
         <button id="buy1000">Comprar 1000 (70€)</button>

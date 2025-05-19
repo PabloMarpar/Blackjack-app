@@ -8,30 +8,49 @@
   <script src="script.js" defer></script>
 </head>
 <body>
-  <h1>🎲 Blackjack AI</h1>
-  <!-- Modal de login -->
-  <div id="login">
-    <input id="userId" placeholder="Tu email o ID" />
-    <button id="loginBtn">Login</button>
-  </div>
-  <!-- App principal -->
-  <div id="app" class="hidden">
-    <nav>
-      <button data-tab="game">Juego</button>
-      <button data-tab="credits">Créditos</button>
-    </nav>
-    <section id="game" class="tab">
-      <label>PS: <input id="ps" type="number" min="4" max="21"></label><br>
-      <label>DC: <input id="dc" type="number" min="1" max="10"></label><br>
-      <label>UA: <input id="ua" type="checkbox"></label><br>
-      <button id="stepBtn">Jugar paso</button>
-      <pre id="out"></pre>
-    </section>
-    <section id="credits" class="tab hidden">
-      <button id="buy50">Comprar 50 (1.5€)</button>
-      <button id="buy1000">Comprar 1000 (70€)</button>
-      <pre id="creditStatus"></pre>
-    </section>
+  <div id="container">
+    <h1>🎲 Blackjack IA</h1>
+
+    <!-- LOGIN -->
+    <div id="login">
+      <input id="userId" placeholder="Tu email o ID" />
+      <button id="loginBtn">Login</button>
+    </div>
+
+    <!-- APP -->
+    <div id="app" class="hidden">
+      <!-- PESTAÑAS -->
+      <nav>
+        <button data-tab="game" class="active">Juego</button>
+        <button data-tab="credits">Créditos</button>
+      </nav>
+
+      <!-- SECCIÓN JUEGO -->
+      <section id="game" class="tab">
+        <div class="input-row">
+          <label>PS: <input id="ps" type="number" min="4" max="21" value="10"></label>
+          <label>DC: <input id="dc" type="number" min="1" max="10" value="5"></label>
+          <label>UA: <input id="ua" type="checkbox"></label>
+        </div>
+
+        <div class="button-row">
+          <button id="stepBtn">Jugar paso</button>
+          <button id="resetBtn">Reset mano</button>
+        </div>
+
+        <div id="results">
+          <div><strong>Decisión:</strong> <span id="decisionOut">—</span></div>
+          <div><strong>Confianza:</strong> <span id="confidenceOut">—</span></div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN CRÉDITOS -->
+      <section id="credits" class="tab hidden">
+        <button id="buy50">Comprar 50 (1.5€)</button>
+        <button id="buy1000">Comprar 1000 (70€)</button>
+        <pre id="creditStatus"></pre>
+      </section>
+    </div>
   </div>
 </body>
 </html>

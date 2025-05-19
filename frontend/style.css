@@ -1,4 +1,52 @@
-body { font-family: sans-serif; max-width: 480px; margin: auto; padding: 1rem; }
-.hidden { display: none; }
-nav button { margin-right: 0.5rem; }
-.tab { margin-top: 1rem; }
+body {
+  font-family: Arial, sans-serif;
+  background: #f0f2f5;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+#app {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.hidden {
+  display: none;
+}
+button {
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 0;
+  border: none;
+  background: #0066ff;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+button:hover {
+  background: #0057dd;
+}
+nav {
+  margin-bottom: 1rem;
+}
+nav button {
+  background: #eee;
+  color: #333;
+  margin-right: 0.2rem;
+}
+nav button.active {
+  background: #0066ff;
+  color: #fff;
+}
+.tab {
+  margin-top: 1rem;
+}
+pre {
+  background: #f7f7f7;
+  padding: 0.5rem;
+  border-radius: 4px;
+  overflow-x: auto;
+}
